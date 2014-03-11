@@ -182,4 +182,80 @@ void mtx_destroy(mtx_t *_mtx)
     free(mtx);
 }
 
+int cnd_init(cnd_t *_cond)
+{
+    int rv = thrd_success;
+    pthread_cond_t *cond;
+
+    if (!_cond) {
+        rv = thrd_error;
+        goto error0;
+    }
+
+    cond = malloc(sizeof(pthread_cond_t));
+    if (!cond) {
+        rv = thrd_nomem;
+        goto error0;
+    }
+
+    if (pthread_cond_init(cond, NULL)) {
+        rv = thrd_error;
+        goto error1;
+    }
+
+    *_cond = (uintptr_t)cond;
+    cond = NULL;
+
+error1:
+    free(cond);
+error0:
+    return rv;
+}
+
+int cnd_signal(cnd_t *_cond)
+{
+    pthread_cond_t *cond = (pthread_cond_t *)*_cond;
+    if (pthread_cond_signal(cond))
+        return thrd_error;
+    return thrd_success;
+}
+
+int cnd_broadcast(cnd_t *_cond)
+{
+    pthread_cond_t *cond = (pthread_cond_t *)*_cond;
+    if (pthread_cond_broadcast(cond))
+        return thrd_error;
+    return thrd_success;
+}
+
+int cnd_wait(cnd_t *_cond, mtx_t *_mtx)
+{
+    pthread_cond_t *cond = (pthread_cond_t *)*_cond;
+    pthread_mutex_t *mtx = (pthread_mutex_t *)*_mtx;
+    if (pthread_cond_wait(cond, mtx))
+        return thrd_error;
+    return thrd_success;
+}
+
+int cnd_timedwait(cnd_t * restrict _cond, mtx_t * restrict _mtx, const struct timespec *restrict _ts)
+{
+    pthread_cond_t *cond = (pthread_cond_t *)*_cond;
+    pthread_mutex_t *mtx = (pthread_mutex_t *)*_mtx;
+    switch (pthread_cond_timedwait(cond, mtx, _ts)) {
+    case ETIMEDOUT:
+        return thrd_busy;
+    case 0:
+        return thrd_success;
+    default:
+        return thrd_error;
+    }
+}
+
+void cnd_destroy(cnd_t *_cond)
+{
+    pthread_cond_t *cond = (pthread_cond_t *)*_cond;
+    pthread_cond_destroy(cond);
+    free(cond);
+}
+
 /* vim: set ts=4 sw=4 noai expandtab: */

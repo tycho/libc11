@@ -7,6 +7,7 @@
 
 typedef uintptr_t thrd_t;
 typedef uintptr_t mtx_t;
+typedef uintptr_t cnd_t;
 
 typedef int (*thrd_start_t)(void *);
 
@@ -40,6 +41,13 @@ int    mtx_timedlock(mtx_t *restrict, const struct timespec *restrict);
 int    mtx_trylock(mtx_t *);
 int    mtx_unlock(mtx_t *);
 void   mtx_destroy(mtx_t *);
+
+int    cnd_init(cnd_t *);
+int    cnd_signal(cnd_t *);
+int    cnd_broadcast(cnd_t *);
+int    cnd_wait(cnd_t *, mtx_t *);
+int    cnd_timedwait(cnd_t * restrict, mtx_t * restrict, const struct timespec *restrict);
+void   cnd_destroy(cnd_t *);
 
 __END_DECLS
 
