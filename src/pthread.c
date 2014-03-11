@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-#include "c11threads.h"
+#include "c11/threads.h"
 
 int thrd_create(thrd_t *_thr, thrd_start_t _func, void *_arg)
 {
