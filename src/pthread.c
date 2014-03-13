@@ -10,7 +10,7 @@ int thrd_create(thrd_t *_thr, thrd_start_t _func, void *_arg)
     if (!_thr)
         return thrd_error;
 
-    if (pthread_create(_thr, NULL, (void*(*)(void*))_func, _arg) != 0)
+    if (pthread_create((pthread_t *)_thr, NULL, (void*(*)(void*))_func, _arg) != 0)
         return thrd_error;
 
     return thrd_success;
