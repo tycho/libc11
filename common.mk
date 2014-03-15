@@ -30,4 +30,23 @@ endif
 LINK       := $(CC)
 AR         := ar rcu
 RM         := rm -f
-CFLAGS     := -O2 -std=c11 -fno-strict-aliasing -Wall -Werror
+
+CPPFLAGS   := -Wall -Werror
+CFOPTIMIZE := -O2
+CFLAGS     := $(CFOPTIMIZE) -std=c11 -fno-strict-aliasing $(CPPFLAGS)
+LDFLAGS    :=
+
+ifeq (,$(findstring clean,$(MAKECMDGOALS)))
+
+TRACK_CFLAGS = $(subst ','\'',$(CC) $(LINK) $(CFLAGS) $(LDFLAGS))
+
+.cflags: .force-cflags
+	@FLAGS='$(TRACK_CFLAGS)'; \
+	if test x"$$FLAGS" != x"`cat .cflags 2>/dev/null`" ; then \
+		echo "    * rebuilding libc11: new build flags or prefix"; \
+		echo "$$FLAGS" > .cflags; \
+	fi
+
+.PHONY: .force-cflags
+
+endif
