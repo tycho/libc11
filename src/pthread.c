@@ -5,13 +5,40 @@
 
 #include "c11/threads.h"
 
+struct _thrd_wrapper_info {
+    thrd_start_t func;
+    void *param;
+};
+
+typedef union {
+    int ival;
+    void *ptrval;
+} _thrd_retval;
+
+static void *_thrd_wrapper(void *ptr)
+{
+    _thrd_retval rv;
+    struct _thrd_wrapper_info info = *(struct _thrd_wrapper_info *)ptr;
+    free(ptr);
+    rv.ival = info.func(info.param);
+    return rv.ptrval;
+}
+
 int thrd_create(thrd_t *_thr, thrd_start_t _func, void *_arg)
 {
+    struct _thrd_wrapper_info *info = NULL;
+
     if (!_thr)
         return thrd_error;
 
-    if (pthread_create((pthread_t *)_thr, NULL, (void*(*)(void*))_func, _arg) != 0)
+    info = malloc(sizeof(struct _thrd_wrapper_info));
+    info->func = _func;
+    info->param = _arg;
+
+    if (pthread_create((pthread_t *)_thr, NULL, _thrd_wrapper, info) != 0) {
+        free(info);
         return thrd_error;
+    }
 
     return thrd_success;
 }
@@ -33,22 +60,20 @@ int thrd_equal(thrd_t a, thrd_t b)
 
 void thrd_exit(int res)
 {
-    uintptr_t v;
-    v = (uintptr_t)res;
-    pthread_exit((void*)v);
+    _thrd_retval rv;
+    rv.ival = res;
+    pthread_exit(rv.ptrval);
 }
 
 int thrd_join(thrd_t thr, int *res)
 {
-    void *rv;
-    uintptr_t r;
+    _thrd_retval rv;
 
-    if (pthread_join((pthread_t)thr, &rv) != 0)
+    if (pthread_join((pthread_t)thr, &rv.ptrval) != 0)
         return thrd_error;
 
     if (res) {
-        r = (uintptr_t)rv;
-        *res = (int)r;
+        *res = rv.ival;
     }
 
     return thrd_success;
