@@ -118,10 +118,19 @@ int mtx_init(mtx_t *_mtx, int _type)
         goto error1;
     }
 
+#ifdef PTHREAD_MUTEX_TIMED_NP
     if ((_type & mtx_timed) && pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_TIMED_NP)) {
         rv = thrd_error;
         goto error1;
     }
+#else
+    /* Platforms without PTHREAD_MUTEX_TIMED_NP can't do timed mutexes. */
+    if (_type & mtx_timed) {
+        rv = thrd_error;
+        goto error1;
+    }
+#endif
+
 
     if ((_type & mtx_recursive) && pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE)) {
         rv = thrd_error;
@@ -165,6 +174,7 @@ int mtx_lock(mtx_t *_mtx)
 
 int mtx_timedlock(mtx_t *restrict _mtx, const struct timespec *restrict _ts)
 {
+#ifdef PTHREAD_MUTEX_TIMED_NP
     pthread_mutex_t *mtx = (pthread_mutex_t *)*_mtx;
     switch (pthread_mutex_timedlock(mtx, _ts)) {
     case EBUSY:
@@ -174,6 +184,9 @@ int mtx_timedlock(mtx_t *restrict _mtx, const struct timespec *restrict _ts)
     default:
         return thrd_error;
     }
+#else
+    return thrd_error;
+#endif
 }
 
 int mtx_trylock(mtx_t *_mtx)
