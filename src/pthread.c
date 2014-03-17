@@ -50,12 +50,12 @@ thrd_t thrd_current(void)
 
 int thrd_detach(thrd_t thr)
 {
-    return pthread_detach(thr) == 0 ? thrd_success : thrd_error;
+    return pthread_detach((pthread_t)thr) == 0 ? thrd_success : thrd_error;
 }
 
 int thrd_equal(thrd_t a, thrd_t b)
 {
-    return pthread_equal(a, b);
+    return pthread_equal((pthread_t)a, (pthread_t)b);
 }
 
 void thrd_exit(int res)
