@@ -3,6 +3,10 @@
 #include <pthread.h>
 #include <stdlib.h>
 
+#ifdef __MACH__
+#include <sched.h>
+#endif
+
 #include "c11/threads.h"
 
 struct _thrd_wrapper_info {
@@ -87,7 +91,11 @@ int thrd_sleep(const struct timespec *time_point,
 
 void thrd_yield(void)
 {
+#ifdef __MACH__
+    sched_yield();
+#else
     pthread_yield();
+#endif
 }
 
 int mtx_init(mtx_t *_mtx, int _type)
