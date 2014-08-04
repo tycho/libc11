@@ -180,7 +180,7 @@ int mtx_lock(mtx_t *_mtx)
     }
 }
 
-int mtx_timedlock(mtx_t *restrict _mtx, const struct timespec *restrict _ts)
+int mtx_timedlock(mtx_t *__restrict _mtx, const struct timespec *__restrict _ts)
 {
 #ifdef PTHREAD_MUTEX_TIMED_NP
     pthread_mutex_t *mtx = (pthread_mutex_t *)*_mtx;
@@ -283,7 +283,7 @@ int cnd_wait(cnd_t *_cond, mtx_t *_mtx)
     return thrd_success;
 }
 
-int cnd_timedwait(cnd_t * restrict _cond, mtx_t * restrict _mtx, const struct timespec *restrict _ts)
+int cnd_timedwait(cnd_t * __restrict _cond, mtx_t * __restrict _mtx, const struct timespec *__restrict _ts)
 {
     pthread_cond_t *cond = (pthread_cond_t *)*_cond;
     pthread_mutex_t *mtx = (pthread_mutex_t *)*_mtx;
