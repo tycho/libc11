@@ -46,18 +46,18 @@ define cc-option-add-closure
 endef
 
 ifneq ($(shell type -P clang),)
-CC         := clang
+CC         ?= clang
 else
-CC         := gcc
+CC         ?= gcc
 endif
 
-LINK       := $(CC)
-AR         := ar rcu
+LINK       ?= $(CC)
+AR         ?= ar rcu
 RM         := rm -f
 
 CPPFLAGS   := -Wall -Werror
-CFOPTIMIZE := -O2
-CFLAGS     := $(CFOPTIMIZE)
+CFOPTIMIZE ?= -O2
+CFLAGS     += $(CFOPTIMIZE)
 $(call cc-option-add,CFLAGS,CC,-std=gnu11)
 $(call cc-option-add,CFLAGS,CC,-fno-strict-aliasing)
 CFLAGS     += $(CPPFLAGS)
