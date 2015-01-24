@@ -17,8 +17,11 @@ endif
 endif
 
 OSNAME     := $(shell uname -s || echo "not")
+ifneq ($(findstring MINGW,$(OSNAME)),)
+OSNAME     := Windows
+endif
 ifneq ($(findstring CYGWIN,$(OSNAME)),)
-OSNAME     := Cygwin
+OSNAME     := Windows
 endif
 
 # cc-option: Check if compiler supports first option, else fall back to second.

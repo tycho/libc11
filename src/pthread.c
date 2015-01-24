@@ -139,7 +139,6 @@ int mtx_init(mtx_t *_mtx, int _type)
     }
 #endif
 
-
     if ((_type & mtx_recursive) && pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE)) {
         rv = thrd_error;
         goto error1;

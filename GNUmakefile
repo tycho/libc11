@@ -3,7 +3,11 @@ include common.mk
 CFLAGS  += -Iinclude
 
 LIB     := libc11.a
+ifeq ($(OSNAME),Windows)
+SOURCES := src/win32.c
+else
 SOURCES := src/pthread.c
+endif
 OBJECTS := $(SOURCES:%.c=%.o)
 
 all: $(LIB)
