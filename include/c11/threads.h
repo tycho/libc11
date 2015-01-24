@@ -1,7 +1,17 @@
 #ifndef __included_c11threads_h__
 #define __included_c11threads_h__
 
+#ifdef _MSC_VER
+#ifdef  __cplusplus
+#define __BEGIN_DECLS extern "C" {
+#define __END_DECLS }
+#else
+#define __BEGIN_DECLS
+#define __END_DECLS
+#endif
+#else
 #include <sys/cdefs.h>
+#endif
 #include <stdint.h>
 #include <time.h>
 
