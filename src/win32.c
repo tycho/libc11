@@ -258,7 +258,7 @@ int cnd_broadcast(cnd_t *_cnd)
 
 int cnd_wait(cnd_t *_cnd, mtx_t *_mtx)
 {
-	int rv;
+	int rv = thrd_success;
 	_cnd_internal_t *cnd = (_cnd_internal_t *)*_cnd;
 
 	mtx_unlock(_mtx);
@@ -272,7 +272,7 @@ int cnd_wait(cnd_t *_cnd, mtx_t *_mtx)
 	}
 	mtx_lock(_mtx);
 
-	return thrd_success;
+	return rv;
 }
 
 int cnd_timedwait(cnd_t * __restrict, mtx_t * __restrict, const struct timespec *__restrict);
