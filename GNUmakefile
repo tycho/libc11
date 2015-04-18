@@ -17,6 +17,7 @@ clean:
 
 $(LIB): $(OBJECTS)
 	$(QUIET_AR)$(AR) $@ $^
+	$(QUIET_RANLIB)$(RANLIB) $@
 
 %.o: %.c .cflags
 	$(QUIET_CC)$(CC) $(CFLAGS) -c -o $@ $<

@@ -11,6 +11,7 @@ ifndef V
     QUIET_CXX       = @echo '   ' CXX  $@;
     QUIET_LINK      = @echo '   ' LD   $@;
     QUIET_NVCC      = @echo '   ' NVCC $@;
+    QUIET_RANLIB    = @echo '   ' RANLIB $@;
     QUIET           = @
     export V
 endif
@@ -56,6 +57,7 @@ endif
 
 LINK       ?= $(CC)
 AR         ?= ar rcu
+RANLIB     ?= ranlib
 RM         := rm -f
 
 CPPFLAGS   := -Wall -Werror
