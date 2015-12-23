@@ -1,17 +1,14 @@
 #ifndef __included_c11threads_h__
 #define __included_c11threads_h__
 
-#ifdef _MSC_VER
 #ifdef  __cplusplus
-#define __BEGIN_DECLS extern "C" {
-#define __END_DECLS }
+#define __BEGIN_LIBTIME_DECLS extern "C" {
+#define __END_LIBTIME_DECLS }
 #else
-#define __BEGIN_DECLS
-#define __END_DECLS
+#define __BEGIN_LIBTIME_DECLS
+#define __END_LIBTIME_DECLS
 #endif
-#else
-#include <sys/cdefs.h>
-#endif
+
 #include <stdint.h>
 #include <time.h>
 
@@ -50,7 +47,7 @@ enum {
     mtx_recursive = 4
 };
 
-__BEGIN_DECLS
+__BEGIN_LIBTIME_DECLS
 
 int    thrd_create(thrd_t *, thrd_start_t, void *);
 thrd_t thrd_current(void);
@@ -75,7 +72,10 @@ int    cnd_wait(cnd_t *, mtx_t *);
 int    cnd_timedwait(cnd_t * __restrict, mtx_t * __restrict, const struct timespec *__restrict);
 void   cnd_destroy(cnd_t *);
 
-__END_DECLS
+__END_LIBTIME_DECLS
+
+#undef __BEGIN_LIBTIME_DECLS
+#undef __END_LIBTIME_DECLS
 
 #endif
 

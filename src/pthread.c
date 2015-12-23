@@ -93,7 +93,7 @@ int thrd_sleep(const struct timespec *time_point,
 
 void thrd_yield(void)
 {
-#ifdef __MACH__
+#if defined(__MACH__) || !defined(__GLIBC__)
     sched_yield();
 #else
     pthread_yield();
