@@ -16,6 +16,7 @@ clean:
 	$(RM) $(LIB) $(OBJECTS)
 
 $(LIB): $(OBJECTS)
+	$(QUIET)$(RM) $@
 	$(QUIET_AR)$(AR) $(ARFLAGS) $@ $^
 	$(QUIET_RANLIB)$(RANLIB) $@
 
