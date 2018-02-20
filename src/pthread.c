@@ -1,3 +1,5 @@
+#if !defined(_WIN32)
+
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
@@ -305,4 +307,5 @@ void cnd_destroy(cnd_t *_cond)
     free(cond);
 }
 
+#endif
 /* vim: set ts=4 sw=4 noai expandtab: */

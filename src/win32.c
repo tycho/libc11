@@ -1,3 +1,4 @@
+#if defined(_WIN32)
 #include <windows.h>
 
 #include "c11/threads.h"
@@ -284,3 +285,6 @@ void cnd_destroy(cnd_t *_cnd)
 	CloseHandle(cnd->events[BROADCAST]);
 	free(cnd);
 }
+
+#endif
+/* vim: set ts=4 sw=4 noai expandtab: */
