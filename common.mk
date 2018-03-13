@@ -28,6 +28,7 @@ endif
 OSNAME     := $(shell uname -s || echo "not")
 ifneq ($(findstring MINGW,$(OSNAME)),)
 OSNAME     := Windows
+CFLAGS     += -fno-asynchronous-unwind-tables
 endif
 ifneq ($(findstring CYGWIN,$(OSNAME)),)
 OSNAME     := Windows
