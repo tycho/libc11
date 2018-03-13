@@ -71,7 +71,7 @@ int thrd_join(thrd_t _thr, int *_rv)
 	if (WaitForSingleObject((HANDLE)_thr, INFINITE) != WAIT_OBJECT_0)
 		return thrd_error;
 
-	if (GetExitCodeThread((HANDLE)_thr, &rv.winval) != 0) {
+	if (GetExitCodeThread((HANDLE)_thr, &rv.winval) != 0 && _rv) {
 		*_rv = rv.ival;
 	}
 
