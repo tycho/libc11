@@ -56,13 +56,7 @@ define def-if-unset-closure
     endif
 endef
 
-$(call def-if-unset,CC,clang)
-ifneq ($(shell type -P clang),)
-$(call def-if-unset,CC,clang)
-else
 $(call def-if-unset,CC,gcc)
-endif
-
 $(call def-if-unset,LINK,$(CC))
 AR         := ar
 ARFLAGS    := rcu
