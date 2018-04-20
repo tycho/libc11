@@ -4,6 +4,7 @@ CFLAGS  += -Iinclude
 
 LIB     := libc11.a
 ifeq ($(OSNAME),Windows)
+CFLAGS  += -D_WIN32
 SOURCES := src/win32.c
 else
 SOURCES := src/pthread.c
