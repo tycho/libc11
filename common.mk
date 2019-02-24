@@ -67,6 +67,7 @@ CPPFLAGS   := -Wall -Werror
 CFOPTIMIZE ?= -O2
 CSTD       := $(call cc-option,$(CC),-std=gnu11,-std=gnu99) \
               $(call cc-option,$(CC),-fno-strict-aliasing,)
+CFLAGS     += -fPIC
 CFLAGS     += $(CFOPTIMIZE)
 CFLAGS     += $(CSTD)
 CFLAGS     += $(CPPFLAGS)
